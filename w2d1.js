@@ -22,22 +22,50 @@ class slStack {
     }
 
     // add to top
-    push(newNode) {}
+    push(newNode) {
+        // if (this.top.next === null) {
+        //     this.top = newNode;
+        // } else {
+        // }
+
+        newNode.next = this.top;
+        this.top = newNode;
+    }
 
     // remove from top
-    pop() {   }
+    pop() {
+        if (temp === null) return;
+
+        var removedNode = this.top;
+        this.top = this.top.next;
+        removedNode.next = null;
+        return removedNode;
+    }
 
     // aka check top
-    peek() {}
+    peek() {
+        return this.top.date;
+    }
 
     // check if empty
-    isEmpty() {}
+    isEmpty() {
+        return this.top === null
+    }
 
     // "1" == 1 true
     // "1" === 1 false
 
     // length getter
-    getLength() {}
+    getLength() {
+        return this.length;
+        //var counter = 0;
+        //var runner = this.top;
+        // while(runner){
+        //     counter++;
+        //     runner = runner.next;
+        // }
+        // return counter;
+    }
 }
 
 // don't forget to instantiate the slStack!
