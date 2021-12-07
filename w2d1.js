@@ -19,6 +19,7 @@ class Node {
 class slStack {
     constructor() {
         this.top = null; // this.head, this.end
+        this.length = 0;
     }
 
     // add to top
@@ -30,6 +31,7 @@ class slStack {
 
         newNode.next = this.top;
         this.top = newNode;
+        this.length++;
     }
 
     // remove from top
@@ -38,6 +40,7 @@ class slStack {
 
         var removedNode = this.top;
         this.top = this.top.next;
+        this.length--;
         removedNode.next = null;
         return removedNode;
     }
