@@ -101,7 +101,19 @@ class Queue {
 // return the queue back to it's original order when you are done
 // you are not allowed to linearly traverse the queue
 // only use public methods enqueue(), dequeue(), peek(), isEmpty(), and count()
-function readQueue(queue) {}
+function readQueue(queue) {
+    var tempQueue = new Queue();
+
+    while(!queue.isEmpty()) {
+        var tempNode = queue.dequeue();
+        tempQueue.enqueue(tempNode);
+    }
+
+    while(!tempQueue.isEmpty()) {
+        queue.enqueue(tempQueue.dequeue());
+    }
+    return queue;
+}
 
 var queue1 = new Queue();
 
