@@ -32,18 +32,29 @@ class slStack {
     // you may not linearly traverse
     // use only stacks and queues as additional storage
     reverse() {
-        var copyStack = this.copy();
-        var reverseStack =  new slStack();
-        // var i = 1;
-        while(!copyStack.isEmpty()) {
-            var tempNode = copyStack.pop();
-            reverseStack.push(tempNode);
-            // console.log(i);
-            // console.log("tempNode", tempNode)
+        // var copyStack = this.copy();
+        // var reverseStack =  new slStack();
+        // // var i = 1;
+        // while(!copyStack.isEmpty()) {
+        //     var tempNode = copyStack.pop();
+        //     reverseStack.push(tempNode);
+        //     // console.log(i);
+        //     // console.log("tempNode", tempNode)
 
-            // i++;
+        //     // i++;
+        // }
+        // return reverseStack;
+    }
+
+    reverse2() {
+        var q = new Queue();
+        while (!this.isEmpty()) {
+            q.enqueue(this.pop())
         }
-        return reverseStack;
+        while (!q.isEmpty()) {
+            this.push(q.dequeue());
+        }
+        return this;
     }
 
     // add to top
