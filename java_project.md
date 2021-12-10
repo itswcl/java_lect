@@ -6,11 +6,11 @@
 4. create schema on MySQL workbench (utf8)
 5. add WEB-INF folder
 6. add packages on com.wei.xxxx
-    - modes, services, repositories, controllers
+    - models, services, repositories, controllers
 7. create the model file to add all these Class
     - name XXXX.java and follows
         - @Entity
-        - @Table(name="schemaNameInputHere")
+        - @Table(name="table_name")
     - member variable adding in such as id, name,number etc
     @Id
     @GeneratedValue
@@ -20,31 +20,80 @@
     # this is for other member variable besides id
     @Column(updatable=false) # this is for createdAt only
     @DateTimeFormat(pattern="yyyy-mm-dd")
-    Date createdAt
-    Date updatedAt (no need column updatable false)
+    @PrePersist
+	protected void onCreate() {this.createdAt = new Date();}
+	@PreUpdate (no need column updatable false)
+	protected void onUpdate() {this.updatedAt = new Date();}
+
     - constructor, getter and setter
     - constructor two 1. empty 2. with only the String info required
     - remember to add protect void onXXX() {this.XXXAt = new Date()} for createdAt and updatedAt
     - check the table links on SQL (rerun the app)
-8. create repository interface
+
+- ONE Class (1)
+    - @Entity
+    - @Table(name="Libraries")
+    - @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
+    - @NotNull @Size(min=3, max=200, message="message to sent if invalidated")
+    - private String name;
+    - private String location;
+    # ---- Constructor
+    - public Library() {}
+    # ----   1 : M -------
+    - @OneToMany(mappedBy="bookLibrary", fetch = FetchType.LAZY)
+    - private List<Book> books
+    - making getter setter for above
+    # checking SQL to make sure the relationship
+    # each class has own Repository and Service
+
+- MANY Class (M)
+    # ----   M : 1 -------
+    - @ManyToOne(fetch = FetchType.LAZY)
+    - @JoinColumn(name="library_id")
+    - private Library bookLibrary;
+    - making getter setter for above
+    # checking SQL to make sure the relationship
+    # each class has own Repository and Service
+
+8. create repository interface for both MANY and ONE
+    - MANY INTERFACE and ONE INTERFACE
     - name XXXRepositories.java
+    - @Repository on top
     - extend CrudRepo <Book, Long>
                     <Model, Id pass in>
-    - @Repository on top
     - List<modelName> findAll();
-9. create service Class
+
+9. create service Class for both MANY and ONE
     - name XXXService.java
     - @Service
 	- @Autowired
-	- private LanguageRepository languageRepository;
+	- private XXXXXRepository xxxxxRepository;
     - add full CRUD method
-        - readAll, readOne, Create, Update, Delete
+        - readAll, readOne, Create, Update, Delete # CRUD
+	# READ ALL
+	public List<Ninja> displayNinjas() {return ninjaRepo.findAll();}
+	# READ ONE
+	public Ninja displayNinja(Long id) {
+		Optional<Ninja> optionalNinja = ninjaRepo.findById(id);
+		if (optionalNinja.isPresent()) {
+			return optionalNinja.get();
+            } else {return null;}
+	}
+	# UPDATE ONE
+	# CREATE ONE , this will be using as UPDATE as WELL
+	public Ninja createNinja(Ninja ninja) {return ninjaRepo.save(ninja);}
+	# DELETE ONE
+	public void removeNinja(Long id) {ninjaRepo.deleteById(id);}
+
 10. Controller
     - XXXController.java
     - @Controller
-    - dependency injection
-        - @Autowired
-        - private XXXService xxxxService
+    - dependency injection for both class
+        @Autowired
+        private XXXXXService xxxxxService;
+        @Autowired
+        private XXXXXService xxxxxService;
+
     - @RequestMapping("/")
         # public String index() {
         # return "index.jsp"
