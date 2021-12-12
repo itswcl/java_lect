@@ -112,7 +112,7 @@
         List<Book> allbooks = bookService.allboks();
         model.addAttribute("allbooks", allbooks);
     - route for edit page
-    - route for edit request
+    - route for edit request * remember to use {id} after @PutMapping("/xxxx/{id}")
 # tip - control + click to see the original location for the stuff
 11. create the jsp file from index.jsp to test out first route from Controller
     1. form create
