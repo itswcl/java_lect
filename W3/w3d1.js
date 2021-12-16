@@ -7,7 +7,7 @@ class DLLNode {
     }
 }
 
-// DLLists have both a .head and .tail pointer
+// DLLists have both a this.head and this.tail pointer
 class DLList {
     constructor() {
         this.head = null;
@@ -20,34 +20,40 @@ class DLList {
     // myDll.addHead(new DLLNode(33));
     // push to head
     addHead(node) {
-        if (this.head == null && this.tail == null) {
+        if (!this.head) { // empty list
             this.head = node;
             this.tail = node;
         } else {
-            this.head.prev = node
-            node.next = this.head
-            this.head = node
+            this.head.prev = node;
+            node.next = this.head;
+            this.head = node;
+
+            // this.tail.next = node;
+            // node.prev = this.tail;
+            // this.tail = node;
         }
-
-
     }
 
     // pop from tail
     removeTail() {
-        if (this.tail === null) {
-            return null;
+        if (this.head == null) return; // empty list
+        if (this.head === this.tail) { // one node
+            var temp = this.tail; // set a temp
+            this.head = null; // disconnect the head
+            this.tail = null; // disconnect the tail
+            return temp;
         }
-
-        var removedNode = this.tail;
-
-        this.tail = this.tail.prev;
-        this.tail.next = null;
-
-        return removedNode;
+        var temp = this.tail; // set a temp
+        this.tail = tail.prev; // move the tail back
+        this.tail.next = null; // null out the new tail's next
+        temp.prev = null; // null out the temp's prev
+        return temp;
     }
 
     // return is empty
-    isEmpty() { }
+    isEmpty() {
+        return this.head === null;
+    }
 
     // return length
     size() { }
@@ -65,9 +71,3 @@ class DLList {
 // print the DLL -> console.log(myDll) did the nodes get added?
 // remove a few nodes from tail
 // print the DLL -> did the correct nodes get removed?
-
-var myDLL = new DLList();
-myDLL.addHead(new DLLNode(33));
-myDLL.addHead(new DLLNode(44));
-myDLL.addHead(new DLLNode(55));
-console.log(myDLL);

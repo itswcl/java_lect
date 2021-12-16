@@ -16,6 +16,75 @@ class DLList {
 
     // == Main Methods ==
 
+    // return true or false if t a node exists with data === val
+    exists(val) {
+        var forwardRunner = this.head;
+        var backwardRunner = this.tail;
+        var count = Math.ceil(this.length / 2);
+        while (count) {
+            if (forwardRunner.data === val || backwardRunner.data === val) {
+                return true;
+            }
+            forwardRunner = forwardRunner.next;
+            backwardRunner = backwardRunner.prev;
+            count--;
+        }
+        return false;
+    }
+
+    // remove and return the first node with data === val, if it exists
+    // what if the list is empty?
+    // what if the target val is the head?
+    // what if the target val is the tail?
+    // what if the target val is the only node in the list?
+    removeVal(val) {
+        var runner = this.head;
+
+        // totally empty
+        if (!runner) {
+            return runner;
+        }
+
+        // remove head and tail
+        if (runner === this.tail && runner.data === val) {
+            this.head = null;
+            this.tail = null;
+            return runner;
+        }
+
+        // remove just head
+        if (runner.data === val) {
+            this.head = runner.next;
+            this.head.prev = null;
+            runner.next = null;
+            return runner;
+        }
+
+        // okay everything else now
+        while (runner) {
+            if (runner.data !== val) {
+                runner = runner.next; // if not val, keep moving runner
+            } else {
+                // we have now found the value
+
+                // remove the tail
+                if (runner === this.tail) {
+                    this.tail = runner.prev;
+                    runner.prev.next = null;
+                    runner.prev = null;
+                    return runner;
+                }
+
+                // all other cases
+                runner.prev.next = runner.next;
+                runner.next.prev = runner.prev;
+                runner.next = null;
+                runner.prev = null;
+                return runner;
+            }
+        }
+    }
+
     // add node before target
     // target is the value of a node in the list
     // consider the edge case where you may have to move the head
@@ -69,9 +138,6 @@ class DLList {
         }
     }
 
-    // --== BONUS ==--
-    append(target, node) { }
-
     // push to head
     addHead(node) {
         if (!this.head) { // empty list
@@ -81,6 +147,10 @@ class DLList {
             this.head.prev = node;
             node.next = this.head;
             this.head = node;
+
+            // this.tail.next = node;
+            // node.prev = this.tail;
+            // this.tail = node;
         }
     }
 
@@ -112,17 +182,23 @@ class DLList {
 
     // pop from head
     removeHead() { }
+
+    // BONUS
+    append(target, node) { }
 }
-
-// instantiate the DLL
+// instantiate the DLL()
 var myCoolDLL = new DLList();
-// console.log(myCoolDLL);
-var n1 = new DLLNode(300);
-myCoolDLL.addHead(n1);
-myCoolDLL.addHead(new DLLNode(200));
-myCoolDLL.addHead(new DLLNode(100));
 
-// console.log(myCoolDLL);
-
-myCoolDLL.prependClean(200, new DLLNode(150));
+// add a few DLLNodes:
+myCoolDLL.addHead(new DLLNode(40))
+myCoolDLL.addHead(new DLLNode(30))
+myCoolDLL.addHead(new DLLNode(20))
+myCoolDLL.addHead(new DLLNode(10))
 console.log(myCoolDLL);
+
+// ---- test new methods:
+console.log(myCoolDLL.exists(30));  // return true
+console.log(myCoolDLL.exists(99));  // return false
+
+console.log(myCoolDLL.removeVal(10));
+console.log(myCoolDLL.removeVal(9001));
