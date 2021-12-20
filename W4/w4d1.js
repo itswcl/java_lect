@@ -42,7 +42,42 @@ class BST {
             |     pass a changed current as we call the function again
             |       |
             v       v                       */
-    insert(node, current) { };
+    insert(node, current) {
+        // create defaults
+        if (current === undefined) {
+            current = this.root;
+        }
+
+        // if the tree is empty
+        if (current === null) {
+            this.root = node
+            return;
+        }
+
+        // check if node val is > or < current's val
+        if (node.val < current.val) {
+            // less than
+            // check if current.left is null
+            if (current.left === null) {
+                // insert node
+                current.left = node;
+                // exit / return
+                return;
+                // else
+            } else {
+                // reassign current
+                // RECURSE - call the function again! // return this.insert(node, new_current)
+                return this.insert(node, current.left)
+            }
+        } else {
+            if (current.right === null) {
+                current.right = node;
+                return;
+            } else {
+                return this.insert(node, current.right)
+            }
+        }
+    };
 }
 
 // Recursion is:
@@ -70,5 +105,3 @@ console.log(myBST);
               (12)   (20)
               /  \   /  \
 */
-
-// ------------------
