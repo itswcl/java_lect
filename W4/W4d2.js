@@ -69,15 +69,75 @@ class BST {
         }
     };
 
-    // recursive
-    getLargestFromSubtree(current) { }
+ // recursive
+ getLargestFromSubtree(current) {
+    // if no tree, tree is root
+    if (current === undefined) {
+        current = this.root;
+    }
 
-    // iterative
-    getSmallestFromSubtree() { }
+    // if tree becomes null, return null
+    if (current === null) {
+        return null;
+    }
 
-    // return true or false is val exists within the current tree
-    // if current is undefined, current = this.root
-    find(val, current) { }
+    // if there is no further nodes, return tree
+    if (current.right === null) {
+        return current.val;
+    }
+
+    // else recurse to the right and try again
+    return this.getLargestFromSubtree(current.right);
+}
+
+// iterative
+getSmallestFromSubtree() {
+    // create runner
+    var runner = this.root;
+
+    // return if root is null
+    if (!runner) return;
+
+    // loop to the left if it exists
+    while (runner.left) {
+        runner = runner.left;
+    }
+    // when the while ends, return runner.val
+    return runner.val;
+}
+
+// return true or false is val exists within the current tree
+// if current is undefined, current = this.root
+find(val, current) {
+    if (current === undefined) {
+        current = this.root;
+    }
+
+    // base cases
+
+    // if current is null, return false up the call stack
+    if (current == null) {
+        return false;
+    }
+
+    // because current is certain to be not null, check val vs val
+    // if equal, return true up the call stack
+    if (current.val === val) {
+        return true;
+    }
+
+    // otherwise we need to recurse
+
+    // decide on which direction
+    if (current.val > val) {
+        current = current.left;
+    } else {
+        current = current.right;
+    }
+
+    // recurse now that current is moved, return the result
+    return this.find(val, current); // true / false up the call stack
+}
 
 };
 
