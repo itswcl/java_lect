@@ -134,12 +134,29 @@ class BST {
 
     // -------------- WEDNESDAY -----------------
     removeSmallest(current = this.root) {
-        if (current == null) return null;
-
-
+        if (current == null) {
+            return false;
+        }
+        if(current.left.left === null){
+            var result = current.left
+            current.left = current.left.right
+            return result;
+        }
+        this.removeSmallest(current.left)
     }
 
-    removeLargest(current = this.root) { }
+    removeLargest(current = this.root) {
+        //This checks to see if anything is there
+        if (current == null) {
+            return false;
+        }
+        if(current.right.right === null){
+            var result = current.right
+            current.right = current.right.left
+            return result;
+        }
+        this.removeLargest(current.right)
+     }
 
 };
 
@@ -155,9 +172,12 @@ myBST.insert(new BSTNode(15));
 myBST.insert(new BSTNode(5));
 myBST.insert(new BSTNode(20));
 myBST.insert(new BSTNode(12));
+myBST.insert(new BSTNode(3));
+myBST.insert(new BSTNode(7));
+myBST.insert(new BSTNode(4));
+console.log("LARGEST ==>", myBST.removeLargest());
+//console.log(myBST.removeSmallest());
 console.log(myBST);
-// console.log(myBST.removeSmallest());
-// console.log("LARGEST ==>", myBST.removeLargest());
 // console.log(myBST);
 
 /*
